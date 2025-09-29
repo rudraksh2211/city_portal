@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>City Complaint Portal</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;700&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+      min-height: 100vh;
+      color: #fff;
+      overflow-x: hidden;
+    }
+
+    .navbar {
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(6px);
+    }
+
+    .container {
+      max-width: 600px;
+      margin-top: 40px;
+      background: rgba(255, 255, 255, 0.05);
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.3);
+    }
+
+    label {
+      color: #fff;
+    }
+
+    .btn-main {
+      padding: 12px 24px;
+      font-size: 18px;
+      margin-top: 10px;
+      width: 100%;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 20px;
+      color: #00c6ff;
+      background: -webkit-linear-gradient(#00c6ff, #0072ff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .alert {
+      margin-top: 20px;
+    }
+
+    footer {
+      text-align: center;
+      padding: 16px;
+      background: #000;
+      color: #bbb;
+      font-size: 14px;
+      letter-spacing: 0.5px;
+      margin-top: 50px;
+    }
+  </style>
+</head>
+<body>
+  <!-- Navbar (Full Width) -->
+  <nav class="navbar navbar-expand-lg navbar-dark w-100">
+    <div class="container-fluid">
+      <a class="navbar-brand fw-bold" href="{{ url_for('citizen_dashboard') }}">🏙️ City Complaint Portal</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarContent">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="{{ url_for('file_complaint') }}">File Complaint</a></li>
+          <li class="nav-item"><a class="nav-link" href="{{ url_for('logout') }}">Logout</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Flash messages -->
+  {% with messages = get_flashed_messages(with_categories=True) %}
+    {% if messages %}
+      {% for category, message in messages %}
+        <div class="alert alert-{{ category }} text-center" role="alert">
+          {{ message }}
+        </div>
+      {% endfor %}
+    {% endif %}
+  {% endwith %}
+
+  <!-- Complaint Form -->
+  <div class="container">
+    <h1>Submit Complaint</h1>
+    <form action="{{ url_for('file_complaint') }}" method="POST" enctype="multipart/form-data">
+      
+      <!-- Title -->
+      <div class="mb-3">
+        <label for="title" class="form-label">Title</label>
+        <input type="text" name="title" id="title" class="form-control" placeholder="Complaint title" required>
+      </div>
+
+      <!-- Location -->
+      <div class="mb-3">
+        <label for="location" class="form-label">Location</label>
+        <input type="text" name="location" id="location" class="form-control" placeholder="Enter location" required>
+      </div>
+
+      <!-- Category -->
+      <div class="mb-3">
+        <label for="category" class="form-label">Category</label>
+        <select class="form-select" name="category" id="category" required>
+          <option value="" disabled selected>Select Category</option>
+          <option value="Water">Water</option>
+          <option value="Electricity">Electricity</option>
+          <option value="Sanitation">Sanitation</option>
+          <option value="Roads">Roads</option>
+          <option value="Other">Other</option>
+        </select>
+      </div>
+
+      <!-- Subcategory -->
+      <div class="mb-3">
+        <label for="subcategory" class="form-label">Subcategory</label>
+        <select class="form-select" name="subcategory" id="subcategory" required>
+          <option value="" disabled selected>Select Subcategory</option>
+        </select>
+      </div>
+
+      <!-- Sub-Subcategory -->
+      <div class="mb-3">
+        <label for="sub_subcategory" class="form-label">Sub-Subcategory</label>
+        <select class="form-select" name="sub_subcategory" id="sub_subcategory" required>
+          <option value="" disabled selected>Select Sub-Subcategory</option>
+        </select>
+      </div>
+
+      <!-- Priority -->
+      <div class="mb-3">
+        <label for="priority" class="form-label">Priority</label>
+        <select class="form-select" name="priority" id="priority">
+          <option value="Normal" selected>Normal</option>
+          <option value="Urgent">Urgent</option>
+          <option value="Critical">Critical</option>
+        </select>
+      </div>
+
+      <!-- Affected People -->
+      <div class="mb-3">
+        <label for="affected_people" class="form-label">Affected People</label>
+        <select class="form-select" name="affected_people" id="affected_people">
+          <option value="Just Me" selected>Just Me</option>
+          <option value="Family / Neighbours">Family / Neighbours</option>
+          <option value="Entire Locality">Entire Locality</option>
+        </select>
+      </div>
+
+      <!-- Description -->
+      <div class="mb-3">
+        <label for="description" class="form-label">Description</label>
+        <textarea class="form-control" name="description" id="description" rows="4" placeholder="Describe the issue" required></textarea>
+      </div>
+
+      <!-- Upload Images -->
+      <div class="mb-3">
+        <label for="images" class="form-label">Upload Images (optional)</label>
+        <input type="file" name="images" id="images" class="form-control" multiple>
+      </div>
+
+      <button type="submit" class="btn btn-primary btn-main">Submit Complaint</button>
+    </form>
+  </div>
+
+  <!-- Dropdown Logic -->
+  <script>
+    const subcategoryOptions = {
+      Water: ["Leakage", "No Supply", "Contamination"],
+      Electricity: ["Power Outage", "Fluctuation", "Meter Issue"],
+      Sanitation: ["Garbage Collection", "Drainage", "Public Toilets"],
+      Roads: ["Potholes", "Broken Streetlights", "Traffic Signals"],
+      Other: ["Other Issues"]
+    };
+
+    const subSubcategoryOptions = {
+      Leakage: ["Tap", "Pipe", "Tank"],
+      "No Supply": ["Residential", "Commercial"],
+      Contamination: ["Chemical", "Biological"],
+      "Power Outage": ["Short Duration", "Long Duration"],
+      Fluctuation: ["Voltage High", "Voltage Low"],
+      "Meter Issue": ["Billing", "Faulty Meter"],
+      "Garbage Collection": ["Missed Pickup", "Overflow"],
+      Drainage: ["Clogged", "Overflow"],
+      "Public Toilets": ["Dirty", "Closed"],
+      Potholes: ["Minor", "Major"],
+      "Broken Streetlights": ["Single Light", "Multiple Lights"],
+      "Traffic Signals": ["Signal Not Working", "Timing Issue"],
+      "Other Issues": ["Specify"]
+    };
+
+    const categorySelect = document.getElementById("category");
+    const subcategorySelect = document.getElementById("subcategory");
+    const subSubcategorySelect = document.getElementById("sub_subcategory");
+
+    categorySelect.addEventListener("change", function () {
+      const subs = subcategoryOptions[this.value] || [];
+      subcategorySelect.innerHTML = '<option value="" disabled selected>Select Subcategory</option>';
+      subs.forEach(sub => {
+        const option = document.createElement("option");
+        option.value = sub;
+        option.textContent = sub;
+        subcategorySelect.appendChild(option);
+      });
+      subSubcategorySelect.innerHTML = '<option value="" disabled selected>Select Sub-Subcategory</option>';
+    });
+
+    subcategorySelect.addEventListener("change", function () {
+      const subs = subSubcategoryOptions[this.value] || [];
+      subSubcategorySelect.innerHTML = '<option value="" disabled selected>Select Sub-Subcategory</option>';
+      subs.forEach(sub => {
+        const option = document.createElement("option");
+        option.value = sub;
+        option.textContent = sub;
+        subSubcategorySelect.appendChild(option);
+      });
+    });
+  </script>
+
+  <!-- Footer -->
+  <footer>
+    &copy; 2025 City Complaint Portal &nbsp;|&nbsp; Made with ❤ by Rudraksh Dusad
+  </footer>
+</body>
+</html>

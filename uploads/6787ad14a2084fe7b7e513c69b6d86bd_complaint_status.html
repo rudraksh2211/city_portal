@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Check Complaint Status – Hostel Complaint Portal</title>
+
+  <!-- Bootstrap & Google Fonts -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(to right, #dceeff, #ffffff);
+      min-height: 100vh;
+    }
+    footer {
+      background: #003366;
+      color: #fff;
+      font-size: 14px;
+    }
+    .form-section {
+      max-width: 500px;
+      margin: auto;
+      padding: 40px 20px 60px;
+    }
+  </style>
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <div class="container">
+      <a class="navbar-brand fw-bold" href="{{ url_for('student_dashboard') }}">Hostle Complaint Portal</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarContent">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="{{ url_for('file_complaint') }}">Submit Complaint</a></li>
+          <li class="nav-item"><a class="nav-link" href="{{ url_for('student_logout') }}">Logout</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <!-- Main Section -->
+  <div class="form-section">
+    <h1 class="text-center text-danger mb-4">Check Complaint Status</h1>
+
+    <!-- Flash messages -->
+    {% with messages = get_flashed_messages(with_categories=True) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="alert alert-{{ category }} alert-dismissible fade show text-center" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
+    <!-- Status Form -->
+    <form action="{{ url_for('complaint_status') }}" method="POST">
+      <div class="mb-3">
+        <label for="complaint_no" class="form-label">Complaint Number</label>
+        <input type="text" class="form-control" id="complaint_no" name="complaint_no"
+               placeholder="e.g. 12345" pattern="\d{5}" maxlength="5" required>
+      </div>
+
+      <div class="mb-3">
+        <label for="college_id" class="form-label">College ID</label>
+        <input type="text" class="form-control" id="college_id" name="college_id"
+               placeholder="e.g. b221234" pattern="[bB]\d{6}" maxlength="7" required>
+      </div>
+
+      <button type="submit" class="btn btn-primary w-100">Check Status</button>
+    </form>
+  </div>
+
+  <!-- Complaint Info -->
+  {% if complaint %}
+  <div class="container my-4">
+    <h3 class="text-success text-center mb-3">Complaint Details</h3>
+    <table class="table table-bordered">
+      <tbody>
+        <tr>
+          <th>Complaint Number</th>
+          <td>{{ complaint.complaint_no }}</td>
+        </tr>
+        <tr>
+          <th>Type</th>
+          <td>{{ complaint.complaint_type }}</td>
+        </tr>
+        <tr>
+          <th>Description</th>
+          <td>{{ complaint.description }}</td>
+        </tr>
+        <tr>
+          <th>Status</th>
+          <td>{{ complaint.status }}</td>
+        </tr>
+        <tr>
+          <th>Submission Date</th>
+          <td>{{ complaint.date_created.strftime('%d %B %Y, %I:%M %p') }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  {% endif %}
+<br><br>
+  <!-- Footer -->
+  <footer class="fixed-bottom text-center py-2">
+    &copy; 2025 Hostel Complaint Portal &nbsp;|&nbsp; Made with ❤ by Rudraksh Dusad
+  </footer>
+</body>
+</html>

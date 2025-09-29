@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>City Complaint Portal</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;700&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(to right, #0d1117, #161b22);
+      color: #e6edf3;
+      min-height: 100vh;
+    }
+
+    .navbar {
+      background-color: #21262d !important;
+      transition: background-color 0.3s ease-in-out;
+    }
+
+    .navbar-brand {
+      font-weight: bold;
+      color: #58a6ff !important;
+    }
+
+    .navbar-nav .nav-link {
+      color: #c9d1d9 !important;
+      transition: color 0.3s ease-in-out;
+    }
+
+    .navbar-nav .nav-link:hover {
+      color: #58a6ff !important;
+    }
+
+    .hero {
+      height: 80vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 32px;
+      opacity: 0;
+      animation: fadeIn 1.2s ease forwards;
+    }
+
+    .hero h1 {
+      font-size: 45px;
+      font-weight: 700;
+      color: #58a6ff;
+      margin-bottom: 16px;
+      transform: translateY(-20px);
+      opacity: 0;
+      animation: slideDown 1s ease forwards 0.5s;
+    }
+
+    .hero p {
+      font-size: 18px;
+      margin-bottom: 32px;
+      color: #8b949e;
+      opacity: 0;
+      animation: fadeIn 1s ease forwards 1s;
+    }
+
+    .btn-main {
+      padding: 12px 24px;
+      font-size: 18px;
+      margin: 8px;
+      border-radius: 8px;
+      background: #238636;
+      border: none;
+      color: #fff;
+      transition: transform 0.2s ease, background 0.3s ease;
+    }
+
+    .btn-main:hover {
+      background: #2ea043;
+      transform: scale(1.05);
+    }
+
+    footer {
+      text-align: center;
+      padding: 16px;
+      background: #21262d;
+      color: #8b949e;
+      font-size: 14px;
+      opacity: 0;
+      animation: fadeIn 1s ease forwards 1.5s;
+    }
+
+    /* Animations */
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes slideDown {
+      from {
+        opacity: 0;
+        transform: translateY(-20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="{{url_for('officer_dashboard')}}">City Complaint Portal</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarContent">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="{{url_for('officer_complaints')}}">Check Complaints</a></li>
+          <li class="nav-item"><a class="nav-link" href="#">Download Report</a></li>
+          <li class="nav-item"><a class="nav-link" href="{{url_for('officer_logout')}}">Logout</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Flash message -->
+  {% with messages = get_flashed_messages() %}
+    {% if messages %}
+      <div class="alert alert-danger text-center mt-2" role="alert">
+        {{ messages[0] }}
+      </div>
+    {% endif %}
+  {% endwith %}
+
+  <!-- Hero -->
+  <section class="hero">
+    <h1>City Complaint Portal</h1>
+    <p>Your voice matters. Report city issues or share suggestions to improve our community.</p>
+    <div>
+      <a href="{{ url_for('officer_complaints') }}" class="btn btn-main">Check Complaints</a>
+      <a href="" class="btn btn-main">Download Report</a>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="fixed-bottom">
+    &copy; 2025 City Complaint Portal &nbsp;|&nbsp; Made with ❤ by Rudraksh Dusad
+  </footer>
+</body>
+</html>

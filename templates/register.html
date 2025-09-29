@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Citizen Register - City Complaint Portal</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;700&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+      min-height: 100vh;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .navbar {
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(6px);
+    }
+
+    .register-container {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      animation: fadeIn 1.2s ease-in-out;
+    }
+
+    .card {
+      width: 100%;
+      max-width: 500px;
+      border-radius: 15px;
+      box-shadow: 0 4px 25px rgba(0, 0, 0, 0.4);
+      background: #1e2a38;
+      color: #fff;
+    }
+
+    .card-header {
+      background: linear-gradient(90deg, #00c6ff, #0072ff);
+      color: #fff;
+      text-align: center;
+      font-size: 22px;
+      font-weight: 600;
+      border-top-left-radius: 15px;
+      border-top-right-radius: 15px;
+      padding: 15px;
+    }
+
+    .btn-primary {
+      width: 100%;
+      border-radius: 50px;
+      padding: 10px;
+      font-size: 16px;
+      background: linear-gradient(90deg, #00c6ff, #0072ff);
+      border: none;
+      transition: transform 0.2s ease-in-out;
+    }
+
+    .btn-primary:hover {
+      transform: scale(1.05);
+      box-shadow: 0px 4px 15px rgba(0, 114, 255, 0.5);
+    }
+
+    .form-text {
+      color: #bbb;
+    }
+
+    .login-link {
+      text-align: center;
+      margin-top: 15px;
+    }
+
+    footer {
+      text-align: center;
+      padding: 12px;
+      background: #000;
+      color: #bbb;
+      font-size: 14px;
+      letter-spacing: 0.5px;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark">
+    <div class="container">
+      <a class="navbar-brand fw-bold" href="{{ url_for('home') }}">🏙️ City Complaint Portal</a>
+    </div>
+  </nav>
+
+  <!-- Flash messages -->
+  {% with messages = get_flashed_messages(with_categories=True) %}
+    {% if messages %}
+      <div class="container mt-3">
+        {% for category, message in messages %}
+          <div class="alert alert-{{ category }} text-center" role="alert">
+            {{ message }}
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+  {% endwith %}
+
+  <!-- Registration Form -->
+  <div class="register-container">
+    <div class="card">
+      <div class="card-header">📝 Citizen Registration</div>
+      <div class="card-body">
+        <form action="{{ url_for('register') }}" method="POST">
+          <div class="mb-3">
+            <label for="name" class="form-label">Full Name</label>
+            <input type="text" class="form-control" id="name" name="name" placeholder="Enter your full name" required>
+          </div>
+
+          <div class="mb-3">
+            <label for="contact" class="form-label">Contact Number</label>
+            <input type="text" class="form-control" id="contact" name="contact" placeholder="Enter 10-digit number" required>
+          </div>
+
+          <div class="mb-3">
+            <label for="aadhar_number" class="form-label">Aadhar Number</label>
+            <input type="text" class="form-control" id="aadhar_number" name="aadhar_number" placeholder="Enter 12-digit Aadhar number" required>
+            <div class="form-text">Used as your Citizen ID.</div>
+          </div>
+
+          <div class="mb-3">
+            <label for="address" class="form-label">Address</label>
+            <input type="text" class="form-control" id="address" name="address" placeholder="Enter your address" required>
+          </div>
+
+          <div class="mb-3">
+            <label for="email" class="form-label">Email Address</label>
+            <input type="email" class="form-control" id="email" name="email" placeholder="Enter your email" required>
+          </div>
+
+          <div class="mb-3">
+            <label for="password" class="form-label">Password</label>
+            <input type="password" class="form-control" id="password" name="password" placeholder="Enter password" required>
+          </div>
+
+          <button type="submit" class="btn btn-primary">Register</button>
+        </form>
+
+        <div class="login-link">
+          <p>Already have an account? <a href="{{ url_for('login') }}" class="text-info">Login Here</a></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="mt-auto">
+    &copy; 2025 City Complaint Portal &nbsp;|&nbsp; Made with ❤ by Rudraksh Dusad
+  </footer>
+</body>
+</html>

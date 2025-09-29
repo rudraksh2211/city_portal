@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>City Complaint Portal</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;700&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+      min-height: 100vh;
+      color: #fff;
+      overflow-x: hidden;
+    }
+
+    .navbar {
+      background: rgba(0, 0, 0, 0.8);
+      backdrop-filter: blur(6px);
+    }
+
+    .hero {
+      height: 80vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 32px;
+      animation: fadeIn 1.5s ease-in-out;
+    }
+
+    .hero h1 {
+      font-size: 48px;
+      font-weight: 700;
+      background: linear-gradient(90deg, #00c6ff, #0072ff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 16px;
+    }
+
+    .hero p {
+      font-size: 18px;
+      margin-bottom: 32px;
+      color: #ddd;
+      max-width: 600px;
+    }
+
+    .btn-main {
+      padding: 14px 28px;
+      font-size: 18px;
+      margin: 8px;
+      border-radius: 50px;
+      transition: all 0.3s ease;
+    }
+
+    .btn-main:hover {
+      transform: scale(1.08);
+      box-shadow: 0px 4px 20px rgba(0, 114, 255, 0.5);
+    }
+
+    footer {
+      text-align: center;
+      padding: 16px;
+      background: #000;
+      color: #bbb;
+      font-size: 14px;
+      letter-spacing: 0.5px;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark">
+    <div class="container">
+      <a class="navbar-brand fw-bold" href="{{ url_for('home') }}">🏙️ City Complaint Portal</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarContent">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="{{ url_for('login') }}">Citizens</a></li>
+          <li class="nav-item"><a class="nav-link" href="{{ url_for('officer_login') }}">Admin</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Flash messages -->
+  {% with messages = get_flashed_messages() %}
+    {% if messages %}
+      <div class="alert alert-danger text-center mt-3" role="alert">
+        {{ messages[0] }}
+      </div>
+    {% endif %}
+  {% endwith %}
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <h1>City Complaint Portal</h1>
+    <p>Your voice matters! Report issues, share feedback, and help build a better city for everyone.</p>
+    <div>
+      <a href="{{ url_for('login') }}" class="btn btn-primary btn-main">👥 Citizens</a>
+      <a href="{{ url_for('officer_login') }}" class="btn btn-outline-light btn-main">⚙️ Admin</a>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="fixed-bottom text-white text-center py-2">
+    &copy; 2025 City Complaint Portal &nbsp;|&nbsp; Made with ❤ by Rudraksh Dusad
+  </footer>
+</body>
+</html>

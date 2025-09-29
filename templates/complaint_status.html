@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Check Complaint Status – City Complaint Portal</title>
+
+  <!-- Bootstrap + Fonts -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+      min-height: 100vh;
+      color: #fff;
+    }
+    .container {
+      margin-top: 40px;
+    }
+    .card {
+      background: rgba(0, 0, 0, 0.6);
+      border: none;
+      border-radius: 12px;
+      box-shadow: 0px 4px 15px rgba(0,0,0,0.4);
+      color: #fff;
+      transition: transform 0.2s ease-in-out;
+    }
+    .card:hover {
+      transform: translateY(-5px);
+    }
+    .badge {
+      font-size: 14px;
+      padding: 6px 12px;
+    }
+    footer {
+      background: #000;
+      color: #bbb;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+      <a class="navbar-brand fw-bold" href="{{ url_for('citizen_dashboard') }}">🏙️ City Complaint Portal</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarContent">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="{{ url_for('file_complaint') }}">Submit Complaint</a></li>
+          <li class="nav-item"><a class="nav-link active" href="{{ url_for('complaint_status') }}">Check Status</a></li>
+          <li class="nav-item"><a class="nav-link" href="{{ url_for('logout') }}">Logout</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Complaint Status -->
+  <div class="container">
+    <h1 class="text-center text-info mb-4">Check Complaint Status</h1>
+
+    <!-- Complaint Search Form -->
+    <form method="POST" action="{{ url_for('complaint_status') }}" class="mb-4">
+      <div class="row justify-content-center">
+        <div class="col-md-6 mb-3">
+          <input type="text" class="form-control" name="complaint_no"
+                 placeholder="Enter Complaint Number (e.g. 123456)" pattern="\d{5,10}" required>
+        </div>
+        <div class="col-md-6 mb-3">
+          <input type="text" class="form-control" name="aadhar_no"
+                 placeholder="Enter Aadhaar Number (12 digits)" pattern="\d{12}" maxlength="12" required>
+        </div>
+        <div class="col-md-12 text-center">
+          <button class="btn btn-primary px-4" type="submit">🔍 Search</button>
+        </div>
+      </div>
+    </form>
+
+    <!-- Complaint Card (only if found) -->
+    {% if complaint %}
+      <div class="row justify-content-center">
+        <div class="col-md-8">
+          <div class="card p-3">
+            <h5>Complaint No: <span class="text-warning">{{ complaint.complaint_no }}</span></h5>
+            <p><strong>Title:</strong> {{ complaint.title }}</p>
+            <p><strong>Category:</strong> {{ complaint.category }} > {{ complaint.subcategory or '-' }} > {{ complaint.sub_subcategory or '-' }}</p>
+            <p><strong>Description:</strong> {{ complaint.description }}</p>
+            <p><strong>Date:</strong> {{ complaint.date_created.strftime('%d %B %Y, %I:%M %p') }}</p>
+            <p><strong>Status:</strong>
+              {% if complaint.status == "Solved" %}
+                <span class="badge bg-success">Solved</span>
+              {% else %}
+                <span class="badge bg-warning text-dark">Pending</span>
+              {% endif %}
+            </p>
+          </div>
+        </div>
+      </div>
+    {% elif complaint is not defined %}
+      <!-- Initial state: nothing searched yet -->
+      <p class="text-center text-light">Enter your complaint number and Aadhaar number above to track its status.</p>
+    {% endif %}
+  </div>
+
+  <!-- Footer -->
+  <footer class="text-center py-2 fixed-bottom">
+    &copy; 2025 City Complaint Portal | Made with ❤ by Rudraksh Dusad
+  </footer>
+</body>
+</html>
