@@ -30,8 +30,8 @@ app.config['MAIL_SERVER']   = 'smtp.gmail.com'
 app.config['MAIL_PORT']     = 587                 # TLS port
 app.config['MAIL_USE_TLS']  = True
 app.config['MAIL_USE_SSL']  = False               # don’t enable both TLS + SSL
-app.config['MAIL_USERNAME'] = 'testcitycomplaint@gmail.com'
-app.config['MAIL_PASSWORD'] = 'boyehhlunavmqauw'  # Gmail App Password
+app.config['MAIL_USERNAME'] = 
+app.config['MAIL_PASSWORD'] =  # Gmail App Password
 app.config['MAIL_DEFAULT_SENDER'] = ('City Complaint Portal', 
                                      'testcitycomplaint@gmail.com')
 mail = Mail(app)
